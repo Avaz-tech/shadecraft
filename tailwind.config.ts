@@ -19,11 +19,11 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         purple: {
-          100: "#F5F0FF", // Soft lavender, very light
-          200: "#D2B9FF", // Light pastel violet
-          400: "#A982FF", // Medium violet with brightness
-          500: "#9254FF", // Stronger, deeper violet
-          600: "#5D1AFF", // Deep violet, rich and bold
+          100: "#F4E9FB", // Very light, soft lavender
+          200: "#E6CFF6", // Light pastel purple
+          400: "#D59EEC", // Medium light violet
+          500: "#CB6CE6", // Main color, vibrant purple
+          600: "#8B3DAC", // Deep, bold violet
         },
         dark: {
           400: "#7986AC",
