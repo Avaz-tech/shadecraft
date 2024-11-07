@@ -17,11 +17,11 @@ export async function POST(req: Request) {
 
   // Get the headers
   const headerPayload = headers();
-  //   @ts-ignore
+  //   @ts-expect-error: should get svix id
   const svix_id = headerPayload.get("svix-id");
-  //   @ts-ignore
+  //   @ts-expect-error: should get svix timestamp
   const svix_timestamp = headerPayload.get("svix-timestamp");
-  //    @ts-ignore
+  //    @ts-expect-error: should get svix signarture
   const svix_signature = headerPayload.get("svix-signature");
 
   // If there are no headers, error out
@@ -70,12 +70,12 @@ export async function POST(req: Request) {
       lastName: last_name,
       photo: image_url,
     };
-    //  @ts-ignore
+    //   @ts-expect-error: should create user
     const newUser = await createUser(user);
 
     // Set public metadata
     if (newUser) {
-      // @ts-ignore
+      //   @ts-expect-error: should updeate metaData
       await clerkClient.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
       username: username!,
       photo: image_url,
     };
-    //  @ts-ignore 
+      //   @ts-expect-error: should update user info
     const updatedUser = await updateUser(id, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });
