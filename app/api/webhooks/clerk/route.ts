@@ -15,14 +15,11 @@ export async function POST(req: Request) {
     throw new Error("Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local");
   }
 
-  // Get the headers
-  const headerPayload = headers();
-  //   @ts-expect-error: should get svix id
-  const svix_id = headerPayload.get("svix-id");
-  //   @ts-expect-error: should get svix timestamp
-  const svix_timestamp = headerPayload.get("svix-timestamp");
-  //    @ts-expect-error: should get svix signarture
-  const svix_signature = headerPayload.get("svix-signature");
+ // Get the headers
+ const headerPayload = headers()
+ const svix_id = (await headerPayload).get('svix-id')
+ const svix_timestamp = (await headerPayload).get('svix-timestamp')
+ const svix_signature = (await headerPayload).get('svix-signature')
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
@@ -70,7 +67,6 @@ export async function POST(req: Request) {
       lastName: last_name,
       photo: image_url,
     };
-    //   @ts-expect-error: should create user
     const newUser = await createUser(user);
 
     // Set public metadata
@@ -93,10 +89,9 @@ export async function POST(req: Request) {
     const user = {
       firstName: first_name,
       lastName: last_name,
-      username: username!,
+      username: username,
       photo: image_url,
     };
-      //   @ts-expect-error: should update user info
     const updatedUser = await updateUser(id, user);
 
     return NextResponse.json({ message: "OK", user: updatedUser });
