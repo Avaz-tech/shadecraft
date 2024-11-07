@@ -27,6 +27,7 @@ export const connectToDatabase = async () => {
     mongoose.connect(MONGODB_URL, {
       dbName: "shadecraft",
       bufferCommands: false,
+      connectTimeoutMS: 30000,
     });
 
   cached.conn = await cached.promise;
