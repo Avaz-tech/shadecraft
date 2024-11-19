@@ -6,14 +6,12 @@ import { handleError } from "../utils";
 import User from "../database/models/user.model";
 import Image from "../database/models/image.model";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
-import { model } from "mongoose";
 
 const populateUser = (query: any) =>
   query.populate({
     path: "author",
     model: User,
-    select: "_id firsName lastName",
+    select: "_id firstName lastName clerkId",
   });
 
 // ADD IMAGE
