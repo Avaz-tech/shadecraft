@@ -23,7 +23,7 @@ const TranformedImage = ({
         <h3 className="h3-bold text-dark-600">Transformed</h3>
         {hasDownload && (
           <button className="downlaod-btn" onClick={downloadHandler}>
-            <Image src="/assets/icons/download.svg" alt="Download Image" width={24} height={24} />
+            <Image src="/assets/icons/download.svg" alt="Download" width={24} height={24} />
           </button>
         )}
       </div>
@@ -35,7 +35,7 @@ const TranformedImage = ({
             width={getImageSize(type, image, "width")}
             height={getImageSize(type, image, "height")}
             src={image?.publicId}
-            alt={image.title}
+            alt={image?.title || "Transformed Image"}
             sizes={"(max-width:767px) 100vw, 50vw"}
             placeholder={dataUrl as PlaceholderValue}
             className="transformed-image"
