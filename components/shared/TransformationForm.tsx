@@ -9,7 +9,7 @@ import { CustomField } from "./CustomField";
 import { Input } from "../ui/input";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect,  useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { updateCredits } from "@/lib/actions/user.action";
@@ -18,6 +18,7 @@ import TranformedImage from "./TranformedImage";
 import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";
+import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -28,8 +29,6 @@ export const formSchema = z.object({
 });
 
 const TransformationForm = ({ action, data = null, userId, type, creditBalance, config = null }: TransformationFormProps) => {
- 
-
   const transformationType = transformationTypes[type];
   const [image, setImage] = useState(data);
   const [newTransformation, setNewTransformation] = useState<Transformations | null>(null);
@@ -39,6 +38,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  // Declare initial values
   const initialValues =
     data && action === "Update"
       ? {
@@ -157,7 +157,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
     return onChangeField(value);
   };
 
-  //  # Handle transform button -> TODO: Update Creditfee to something else
+  // # Handle transform button
   const onTransformHandler = async () => {
     setIsTransforming(true);
 
@@ -179,6 +179,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
         <CustomField
           control={form.control}
           name="title"
