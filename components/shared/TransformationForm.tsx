@@ -84,19 +84,15 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
       if (action === "Add") {
         try {
-          console.log("Here -1.1 -->>", image);
-
           const newImage = await addImage({
             image: imageData,
             userId,
             path: "/",
           });
-          console.log("Here -1.2 -->>", image);
 
           if (newImage) {
             form.reset();
             setImage(data);
-            console.log("Here -1.1 -->>", image);
 
             router.push(`/transformations/${newImage._id}`);
           }
@@ -195,7 +191,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
             formLabel="Aspect Ratio"
             className="w-full"
             render={({ field }) => (
-              <Select onValueChange={(value) => onSelectFieldHandler(value, field.onChange)}>
+              <Select onValueChange={(value) => onSelectFieldHandler(value, field.onChange)} value={field.value}>
                 <SelectTrigger className="select-field">
                   <SelectValue placeholder="Select Size" />
                 </SelectTrigger>
@@ -211,7 +207,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
           />
         )}
 
-        {(type === "remove" || type === "recolor") && (
+        {(type === "remove" || type === "recolor") && ( 
           <div className="prompt-field">
             <CustomField
               control={form.control}
