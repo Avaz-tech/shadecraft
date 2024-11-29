@@ -14,7 +14,7 @@ import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { updateCredits } from "@/lib/actions/user.action";
 import MediaUploader from "./MediaUploader";
-import TranformedImage from "./TranformedImage";
+import TranformedImage from "./TransformedImage";
 import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";

@@ -1,9 +1,11 @@
-import { dataUrl, debounce, getImageSize } from "@/lib/utils";
-import { CldImage } from "next-cloudinary";
+"use client";
+
+import { dataUrl, debounce, download, getImageSize } from "@/lib/utils";
+import { CldImage, getCldImageUrl } from "next-cloudinary";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
-const TranformedImage = ({
+const TransformedImage = ({
   image,
   type,
   title,
@@ -13,8 +15,18 @@ const TranformedImage = ({
   hasDownload = false,
 }: TransformedImageProps) => {
   //Handling transformed image download
-  const downloadHandler = (e: any) => {
-    console.log(e.target.value);
+  const downloadHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+
+    download(
+      getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
+        src: image?.publicId,
+        ...transformationConfig,
+      }),
+      title
+    );
   };
 
   return (
@@ -62,4 +74,4 @@ const TranformedImage = ({
   );
 };
 
-export default TranformedImage;
+export default TransformedImage;
