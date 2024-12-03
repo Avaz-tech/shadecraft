@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 "use client";
 import { useToast } from "@/hooks/use-toast";
 import { dataUrl, getImageSize } from "@/lib/utils";
@@ -9,7 +10,7 @@ import Image from "next/image";
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
   setImage: React.Dispatch<any>;
-  publicId: string;
+  publicId: string | undefined;
   image: any;
   type: string;
 };
@@ -53,7 +54,6 @@ const MediaUploader = ({ onValueChange, setImage, image, publicId, type }: Media
       options={{ multiple: false, resourceType: "image" }}
       onSuccess={onUploadSuccessHandler}
       onError={onUploadErrorHandler}
-      
     >
       {({ open }) => (
         <div className="flex flex-col gap-4">

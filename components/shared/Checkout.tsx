@@ -35,7 +35,7 @@ const Checkout = ({ plan, amount, credits, buyerId }: { plan: string; amount: nu
         className: "error-toast",
       });
     }
-  }, []);
+  }, [toast]);
 
   const onCheckout = async () => {
     const transaction = {
@@ -49,13 +49,13 @@ const Checkout = ({ plan, amount, credits, buyerId }: { plan: string; amount: nu
   };
 
   return (
-    <form action={onCheckout} method="POST">
-      <section>
-        <Button type="submit" role="link" className="w-full rounded-full bg-purple-gradient bg-cover">
-          Buy Credit
-        </Button>
-      </section>
-    </form>
+    // <form action={onCheckout} method="POST">
+    <section>
+      <Button onClick={onCheckout} type="button" role="link" className="w-full rounded-full bg-purple-gradient bg-cover">
+        Buy Credit
+      </Button>
+    </section>
+    // {/* </form> */}]
   );
 };
 

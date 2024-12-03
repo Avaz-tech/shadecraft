@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,7 +36,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [transformationConfig, setTransformationConfig] = useState(config);
-  const [isPending, startTransition] = useTransition();
+  const [ , startTransition] = useTransition();
   const router = useRouter();
 
   // Declare initial values
@@ -207,7 +208,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
           />
         )}
 
-        {(type === "remove" || type === "recolor") && ( 
+        {(type === "remove" || type === "recolor") && (
           <div className="prompt-field">
             <CustomField
               control={form.control}

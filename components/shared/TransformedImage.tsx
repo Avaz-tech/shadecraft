@@ -52,12 +52,13 @@ const TransformedImage = ({
             placeholder={dataUrl as PlaceholderValue}
             className="transformed-image"
             onLoad={() => {
-              setIsTransforming && setIsTransforming(false);
+              if (setIsTransforming) setIsTransforming(false);
             }}
             onError={() => {
-              debounce(() => {
-                setIsTransforming && setIsTransforming(false);
-              }, 8000)()
+              const debouncedSetTransforming = debounce(() => {
+                if (setIsTransforming) setIsTransforming(false);
+              }, 8000);
+              debouncedSetTransforming(); // Now you explicitly call the debounced function
             }}
             {...transformationConfig}
           />
