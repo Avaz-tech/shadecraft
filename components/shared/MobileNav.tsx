@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { navLinks } from "@/constants";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
@@ -9,6 +10,8 @@ import { Button } from "../ui/button";
 import { NavLinks } from "./NavLinks";
 
 export default function MobileNav() {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   return (
     <header className="header">
       <Link href="/" className="flex items-center gap-2 md:p-2">
@@ -19,7 +22,7 @@ export default function MobileNav() {
         <SignedIn>
           <UserButton afterSwitchSessionUrl="/" />
 
-          <Sheet>
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger>
               <Image src="/assets/icons/menu.svg" alt="menu" width={32} height={32} className="cursor-pointer" />
             </SheetTrigger>
@@ -32,7 +35,9 @@ export default function MobileNav() {
                 className="header-nav_elements"
                 linkClassName="sidebar-link cursor-pointer"
                 activeClassName="gradient-text"
+                activeIconClassName="opacity-100"
                 itemClassName="p-18 flex whitespace-nowrap text-dark-700"
+                onLinkClick={() => setSheetOpen(false)}
               />
             </SheetContent>
           </Sheet>

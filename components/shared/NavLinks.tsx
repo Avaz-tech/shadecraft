@@ -11,10 +11,14 @@ type NavLinksProps = {
   linkClassName?: string;
   activeClassName?: string;
   iconClassName?: string;
+  /** Class for the icon when the link is active. If not set, uses "brightness-200". Set to "" to avoid bright/white icon (e.g. mobile). */
+  activeIconClassName?: string;
   /** Optional class for each <li>. If not set, uses sidebar-nav_element + active/text. */
   itemClassName?: string;
   /** When true (default), wrap items in <ul>. When false, render only <li> elements for use inside a parent ul. */
   wrapInUl?: boolean;
+  /** Called when any link is clicked (e.g. to close mobile sheet). */
+  onLinkClick?: () => void;
 };
 
 export function NavLinks({
@@ -23,8 +27,10 @@ export function NavLinks({
   linkClassName = "sidebar-link",
   activeClassName = "bg-purple-500 text-white",
   iconClassName = "",
+  activeIconClassName,
   itemClassName,
   wrapInUl = true,
+  onLinkClick,
 }: NavLinksProps) {
   const pathname = usePathname();
 
@@ -33,15 +39,16 @@ export function NavLinks({
     const liClass = itemClassName
       ? `${itemClassName} ${isActive ? activeClassName : ""}`.trim()
       : `sidebar-nav_element group ${isActive ? activeClassName : "text-gray-700"}`;
+    const iconClassWhenActive = activeIconClassName !== undefined ? activeIconClassName : "brightness-200";
     return (
       <li key={link.route} className={liClass}>
-        <Link className={linkClassName} href={link.route}>
+        <Link className={linkClassName} href={link.route} onClick={onLinkClick}>
           <Image
             src={link.icon}
             alt="navlink-icon"
             width={24}
             height={24}
-            className={`${isActive ? "brightness-200" : ""} ${iconClassName}`.trim()}
+            className={`${isActive ? iconClassWhenActive : ""} ${iconClassName}`.trim()}
           />
           {link.label}
         </Link>
