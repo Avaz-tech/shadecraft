@@ -1,9 +1,9 @@
 "use client";
 
-import { loadStripe } from "@stripe/stripe-js";
 import { useEffect } from "react";
 
 import { useToast } from "@/hooks/use-toast";
+import { getStripe } from "@/lib/stripe";
 import { checkoutCredits } from "@/lib/actions/transaction.action";
 
 import { Button } from "../ui/button";
@@ -12,7 +12,7 @@ const Checkout = ({ plan, amount, credits, buyerId }: { plan: string; amount: nu
   const { toast } = useToast();
 
   useEffect(() => {
-    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+    getStripe();
   }, []);
 
   useEffect(() => {
@@ -49,13 +49,11 @@ const Checkout = ({ plan, amount, credits, buyerId }: { plan: string; amount: nu
   };
 
   return (
-    // <form action={onCheckout} method="POST">
     <section>
       <Button onClick={onCheckout} type="button" role="link" className="w-full rounded-full bg-purple-gradient bg-cover">
         Buy Credit
       </Button>
     </section>
-    // {/* </form> */}]
   );
 };
 

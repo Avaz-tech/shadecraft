@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    optimizePackageImports: ["@radix-ui/react-alert-dialog", "@radix-ui/react-dialog", "@radix-ui/react-label", "@radix-ui/react-select", "@radix-ui/react-slot", "@radix-ui/react-toast", "lucide-react"],
+  },
 };
 
 export default nextConfig;

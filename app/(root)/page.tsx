@@ -1,10 +1,20 @@
-import { Collection } from "@/components/shared/Collection";
+import dynamic from "next/dynamic";
 import { navLinks } from "@/constants";
 import { getAllImages } from "@/lib/actions/image.actions";
 import Image from "next/image";
 import Link from "next/link";
 
-
+const Collection = dynamic(() => import("@/components/shared/Collection").then((m) => ({ default: m.Collection })), {
+  loading: () => (
+    <div className="collection-heading">
+      <h2 className="h2-bold text-dark-600">Recent Edits</h2>
+      <div className="collection-empty animate-pulse rounded-lg bg-dark-400/10 p-12">
+        <p className="p-20-semibold text-dark-400/50">Loading...</p>
+      </div>
+    </div>
+  ),
+  ssr: true,
+});
 
 const Home = async ({ searchParams }: SearchParamProps) => {
   const page = (await searchParams).page;

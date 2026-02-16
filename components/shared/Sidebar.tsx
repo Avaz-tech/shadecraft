@@ -1,70 +1,52 @@
-"use client";
-
 import { navLinks } from "@/constants";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
-import { Button } from "../ui/button";
+import { SidebarAuth } from "./SidebarAuth";
+import { SidebarLinkHighlighter } from "./SidebarLinkHighlighter";
 
-const Sidebar = () => {
-  const pathname = usePathname();
-
+/**
+ * Server-rendered sidebar so it appears with the first paint.
+ * Only the auth block (UserButton / Login) and active-link highlighting run on the client.
+ */
+export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="flex size-full flex-col gap-4">
         <Link href="/" className="sidebar-logo">
-          <Image src="/assets/images/shadecraft-logo.png" alt="logo" width={180} height={28} priority={true} />
+          <Image
+            src="/assets/images/shadecraft-logo.png"
+            alt="logo"
+            width={180}
+            height={28}
+            priority
+          />
         </Link>
 
         <nav className="sidebar-nav">
-          <SignedIn>
-            {/* Top ul */}
-            <ul className="sidebar-nav_elements">
-              {navLinks.slice(0, 6).map((link) => {
-                const isActive = link.route === pathname;
-
-                return (
-                  <li key={link.route} className={`sidebar-nav_element group ${isActive ? "bg-purple-500 text-white" : "text-gray-700"}`}>
-                    <Link className="sidebar-link" href={link.route}>
-                      <Image src={link.icon} alt="navlink-icon" width={24} height={24} className={`${isActive && "brightness-200"}`} />
-                      {link.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* Bottom ul */}
-            <ul className="sidebar-nav_elements">
-              {navLinks.slice(6).map((link) => {
-                const isActive = link.route === pathname;
-
-                return (
-                  <li key={link.route} className={`sidebar-nav_element group ${isActive ? "bg-purple-500 text-white" : "text-gray-700"}`}>
-                    <Link className="sidebar-link" href={link.route}>
-                      <Image src={link.icon} alt="navlink-icon" width={24} height={24} className={`${isActive && "brightness-200"}`} />
-                      {link.label}
-                    </Link>
-                  </li>
-                );
-              })}
-              <li className="flex-center cursor-pointer gap-2 p-4">
-                <UserButton afterSwitchSessionUrl="/" showName />
+          <ul className="sidebar-nav_elements">
+            {navLinks.slice(0, 6).map((link) => (
+              <li key={link.route} className="sidebar-nav_element group text-gray-700">
+                <Link className="sidebar-link" href={link.route} data-route={link.route}>
+                  <Image src={link.icon} alt="" width={24} height={24} />
+                  {link.label}
+                </Link>
               </li>
-            </ul>
-          </SignedIn>
-
-          <SignedOut>
-            <Button asChild className="button bg-purple-500 bg-cover">
-              <Link href="/sign-in">Login</Link>
-            </Button>
-          </SignedOut>
+            ))}
+          </ul>
+          <ul className="sidebar-nav_elements">
+            {navLinks.slice(6).map((link) => (
+              <li key={link.route} className="sidebar-nav_element group text-gray-700">
+                <Link className="sidebar-link" href={link.route} data-route={link.route}>
+                  <Image src={link.icon} alt="" width={24} height={24} />
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <SidebarAuth />
+          </ul>
+          <SidebarLinkHighlighter />
         </nav>
       </div>
     </aside>
   );
-};
-
-export default Sidebar;
+}

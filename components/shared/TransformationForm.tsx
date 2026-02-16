@@ -10,12 +10,12 @@ import { CustomField } from "./CustomField";
 import { Input } from "../ui/input";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { updateCredits } from "@/lib/actions/user.action";
 import MediaUploader from "./MediaUploader";
-import TranformedImage from "./TransformedImage";
+import TransformedImage from "./TransformedImage";
 import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";
@@ -139,18 +139,22 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
     return onChangeField(value);
   };
-  //   # Handle onInput
-  const onInputChangeHandler = (fieldName: string, value: string, type: string, onChangeField: (value: string) => void) => {
-    debounce(() => {
+  // Debounced transformation update (stable reference so debounce actually works)
+  const debouncedSetTransformation = useRef(
+    debounce((type: string, fieldKey: string, value: string) => {
       setNewTransformation((prevState: any) => ({
         ...prevState,
         [type]: {
           ...prevState?.[type],
-          [fieldName === "prompt" ? "prompt" : "to"]: value,
+          [fieldKey]: value,
         },
       }));
-    }, 1000)();
+    }, 1000)
+  ).current;
 
+  //   # Handle onInput
+  const onInputChangeHandler = (fieldName: string, value: string, type: string, onChangeField: (value: string) => void) => {
+    debouncedSetTransformation(type, fieldName === "prompt" ? "prompt" : "to", value);
     return onChangeField(value);
   };
 
@@ -254,7 +258,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
             )}
           />
 
-          <TranformedImage
+          <TransformedImage
             image={image}
             type={type}
             title={form.getValues().title}

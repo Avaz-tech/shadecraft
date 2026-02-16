@@ -1,11 +1,23 @@
+import dynamic from "next/dynamic";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
 import { getUserImages } from "@/lib/actions/image.actions";
 import { getUserById } from "@/lib/actions/user.action";
+
+const Collection = dynamic(() => import("@/components/shared/Collection").then((m) => ({ default: m.Collection })), {
+  loading: () => (
+    <div className="collection-heading">
+      <h2 className="h2-bold text-dark-600">Recent Edits</h2>
+      <div className="collection-empty animate-pulse rounded-lg bg-dark-400/10 p-12">
+        <p className="p-20-semibold text-dark-400/50">Loading...</p>
+      </div>
+    </div>
+  ),
+  ssr: true,
+});
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const searchPrms = await searchParams;

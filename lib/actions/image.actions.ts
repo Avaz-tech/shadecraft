@@ -121,14 +121,14 @@ export async function getAllImages({ limit = 9, pageNum = 1, searchQuery = "" }:
 
     const skipAmount = (Number(pageNum) - 1) * limit;
 
-    const images = await populateUser(Image.find(query)).sort({ updatedAt: -1 }).skip(skipAmount).limit(limit);
-    const totalImages = await Image.find(query).countDocuments();
-    const savedImages = await Image.find().countDocuments();
+    const [images, totalImages] = await Promise.all([
+      populateUser(Image.find(query)).sort({ updatedAt: -1 }).skip(skipAmount).limit(limit),
+      Image.find(query).countDocuments(),
+    ]);
 
     return {
       data: JSON.parse(JSON.stringify(images)),
       totalPage: Math.ceil(totalImages / limit),
-      savedImages,
     };
   } catch (error) {
     handleError(error);
@@ -141,13 +141,12 @@ export async function getUserImages({ limit = 9, page = 1, userId }: { limit?: n
     await connectToDatabase();
 
     const skipAmount = (Number(page) - 1) * limit;
+    const baseQuery = Image.find({ author: userId });
 
-    const images = await populateUser(Image.find({ author: userId }))
-      .sort({ updatedAt: -1 })
-      .skip(skipAmount)
-      .limit(limit);
-
-    const totalImages = await Image.find({ author: userId }).countDocuments();
+    const [images, totalImages] = await Promise.all([
+      populateUser(baseQuery).sort({ updatedAt: -1 }).skip(skipAmount).limit(limit),
+      Image.countDocuments({ author: userId }),
+    ]);
 
     return {
       data: JSON.parse(JSON.stringify(images)),
